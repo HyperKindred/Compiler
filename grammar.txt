@@ -11,9 +11,9 @@ VarDec -> ID
 FucDec -> ID ( VarList )  | ID ( )										
 VarList -> ParamDec , VarList   |   ParamDec						
 ParamDec -> Specifier VarDec
-CompSt -> { DefList  StmList }											
+CompSt -> { DefList  StmList  CompSt  |   ε }											
 StmList -> Stmt  StmList | ε							
-Stmt -> Exp ;  |  CompSt  | return Exp ;     | if ( Exp ) Stmt   | if ( Exp ) Stmt else Stmt   | while ( Exp ) Stmt							
+Stmt -> Exp ;  |  CompSt  | return Exp ; | if ( Exp ) Stmt   | if ( Exp ) Stmt else Stmt   | while ( Exp ) Stmt							
 DefList -> Def DefList  |    ε									
 Def -> Specifier DecList ;												
 DecList -> Dec  | Dec , DecList					
