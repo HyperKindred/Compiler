@@ -1,34 +1,76 @@
 program -> ExtDefList
+
 ExtDefList -> ExtDef ExtDefList | ε
-ExtDef -> Specifier ExtDecList ; | Specifier FunDec CompSt
-Specifier -> int | float
-program -> ExtDefList  
-ExtDefList -> ExtDef  ExtDefList | ε
-ExtDef -> Specifier  ExtDecList ; |Specifier  FunDec  CompSt
-Specifier -> int | float
+
+ExtDef -> Specifier ExtDecList ; 
+         | Specifier FunDec CompSt 
+         | Specifier ID Indices
+
+Specifier -> int | float | char
+
 ExtDecList -> VarDec | VarDec , ExtDecList
-VarDec -> ID
-FucDec -> ID ( VarList )  | ID ( )										
-VarList -> ParamDec , VarList   |   ParamDec						
+
+Indices -> Indice Indices | ε
+
+Indice -> [ Exp ]
+
+VarDec -> ID | VarDec[ INT ]
+
+FunDec -> ID ( VarList ) | ID ( )
+
+VarList -> ParamDec , VarList | ParamDec | ε
+
 ParamDec -> Specifier VarDec
-CompSt -> { DefList  StmList  CompSt  |   ε }											
-StmList -> Stmt  StmList | ε							
-Stmt -> Exp ;  |  CompSt  | return Exp ; | if ( Exp ) Stmt   | if ( Exp ) Stmt else Stmt   | while ( Exp ) Stmt							
-DefList -> Def DefList  |    ε									
-Def -> Specifier DecList ;												
-DecList -> Dec  | Dec , DecList					
-Dec -> VarDec  |  VarDec = Exp						
-Exp -> Exp =Exp  | Exp && Exp |  Exp || Exp   | Exp < Exp | Exp <= Exp |Exp == Exp | Exp != Exp	| Exp > Exp | Exp >= Exp| Exp + Exp	
-               | Exp - Exp  | Exp * Exp	| Exp / Exp	| ID | INT | FLOAT| ( Exp )		| - Exp  |  ! Exp  | ID ( Args )  | ID ( )
-Args -> Exp , Args  | Exp
 
+CompSt -> { DefList StmList } | ε
 
-  
-  
-                                                                                                   
-  
-                                                                                           
-  									
-  							
-													
+StmList -> Stmt StmList | ε
 
+Stmt -> AssignmentStmt ;  
+      | CompSt  
+      | return Exp ; 
+      | if ( Exp ) Stmt   
+      | if ( Exp ) Stmt else Stmt   
+      | while ( Exp ) Stmt
+      | continue ;
+      | break ;
+      | for ( Init ; Condition ; Increment ) Stmt
+
+AssignmentStmt -> VarDec = Exp 
+                | ID = Exp
+                | ID ++
+                | ID --
+                | ε  
+
+Init -> AssignmentStmt | ε 
+
+Condition -> Exp  
+
+Increment -> AssignmentStmt | ε  
+
+DefList -> Def DefList | ε
+
+Def -> Specifier DecList ;
+
+DecList -> Dec | Dec , DecList
+
+Dec -> VarDec | VarDec = Exp
+
+Exp -> Exp || Exp
+     | Exp && Exp
+     | Exp relop Exp
+     | ID
+     | INT
+     | CHAR
+     | FLOAT
+     | ( Exp )
+     | - Exp
+     | ! Exp
+     | ID ( Args )
+     | ID ( )
+     | ID Indices
+     | ID ++
+     | ID --
+     | ε
+
+Args -> Exp , Args | Exp | ε
